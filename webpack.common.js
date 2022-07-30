@@ -2,13 +2,12 @@ const path = require('path');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-// const CopyWebpackPlugin = require('copy-webpack-plugin');
+const EslintWebpackPlugin = require('eslint-webpack-plugin');
 
 
 const MODE = process.env.NODE_ENV;
 
 const generateName = (ext) => {
-    console.log(MODE)
     return MODE === 'development' ? `[name].${ext}` : `[name].[contenthash].${ext}`;
 };
 
@@ -19,15 +18,28 @@ const plugins = [
     }),
     new MiniCssExtractPlugin({
         filename: generateName('css')
+    }),
+    new EslintWebpackPlugin({
+        context: path.resolve(__dirname),
+        extensions: ['tsx', 'ts'],
+        exclude: [
+            './build',
+            './node_modules',
+            './src/assets'
+        ]
     })
 ];
 
 const commonConfig = {
     mode: MODE,
     context: path.resolve(__dirname),
+
+    resolve: {
+        extensions: ['.tsx', '.ts', '.js']
+    },
     
     entry: {
-        index: './src/index.js'
+        index: './src/index.tsx'
     },
 
     output: {
@@ -50,6 +62,10 @@ const commonConfig = {
                     'css-loader',
                     'postcss-loader'
                 ]
+            },
+            {
+                test: /\.tsx?$/,
+                use: ['babel-loader']
             },
             {
                 test: /\.(png|svg|jpg|jpeg|gif)$/i,
