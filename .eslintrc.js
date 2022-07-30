@@ -29,6 +29,8 @@ module.exports = {
 		'react/react-in-jsx-scope': 'off',
 		'indent': ['error', 'tab'],
 		'no-tabs': 'off',
-		'comma-dangle': ['error', 'never']
+		'comma-dangle': ['error', 'never'],
+		'require-jsdoc': 'off',
+		'react/prop-types': 'off'
 	}
 };
